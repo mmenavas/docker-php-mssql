@@ -1,0 +1,38 @@
+ahoyapi: v2
+commands:
+  build:
+    cmd: "docker-compose build"
+    usage: Build or rebuild webserver image.
+  down:
+    cmd: "docker-compose down"
+    usage: Stop and remove all containers, volumes, and networks.
+  drush:
+    cmd: docker exec -it $(docker-compose ps -q apache) bash -c "drush $@"
+    usage: Run a command in the apache container. The command that follows `ahoy run` must be wrapped in quotes. `ahoy run 'php --version'`
+  mysql:
+    cmd: "docker exec -it $(docker-compose ps -q apache) bash -c 'mysql -u drupal -pdrupal -h mysql drupal'"
+    usage: Connect to the default mysql database.
+  mysql-import:
+    cmd: "docker exec -i $(docker-compose ps -q apache) bash -c 'mysql -u drupal -pdrupal -h mysql drupal'"
+    usage: Pipe in a sql file.  `ahoy mysql-import < backups/live.sql`
+  mysql-dump:
+    cmd: "docker exec -it $(docker-compose ps -q apache) bash -c 'mysqldump -u drupal -pdrupal -h mysql drupal'"
+    usage: Dump data out into a file. `ahoy mysql-import > backups/local.sql`
+  ps:
+    cmd: "docker-compose ps"
+    usage: List all running containers.
+  run:
+    cmd: docker exec -it $(docker-compose ps -q apache) bash -c "$@"
+    usage: Run a command in the apache container. The command that follows `ahoy run` must be wrapped in quotes. `ahoy run 'php --version'`
+  restart:
+    cmd: "docker-compose restart"
+    usage: Restart the containers.
+  ssh:
+    cmd: docker exec -it $(docker-compose ps -q apache) bash
+    usage: Connect to apache container via ssh.
+  stop:
+    cmd: "docker-compose stop"
+    usage: Stop the containers (non-destructive).
+  up:
+    cmd: "docker-compose up -d"
+    usage: Start the containers.
