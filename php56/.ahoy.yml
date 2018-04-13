@@ -25,7 +25,7 @@ commands:
     cmd: docker exec -it $(docker-compose ps -q apache) bash -c "$@"
     usage: Run a command in the apache container. The command that follows `ahoy run` must be wrapped in quotes. `ahoy run 'php --version'`
   restart:
-    cmd: "docker-compose restart"
+    cmd: "docker-compose restart && ahoy ps"
     usage: Restart the containers.
   ssh:
     cmd: docker exec -it $(docker-compose ps -q apache) bash
@@ -34,5 +34,5 @@ commands:
     cmd: "docker-compose stop"
     usage: Stop the containers (non-destructive).
   up:
-    cmd: "docker-compose up -d"
+    cmd: "docker-compose up -d && ahoy ps"
     usage: Start the containers.
