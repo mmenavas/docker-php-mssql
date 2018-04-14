@@ -1,7 +1,7 @@
 ## CentOS Docker Images for PHP-MSSQL Projects 
 This repo provides everything you need to build a docker-powered local environment for PHP and MSSQL development.
 
-**Note:** You do not need to clone this repo. Zipped files are provided for each environment type (e.g. CentOS 7 and PHP 7.0).
+**Note:** You do not need to clone this repo. Zipped files are provided for each environment type (e.g. CentOS 7 with PHP 7.0).
 
 ### Requirements
 - Install [Docker for Mac](https://www.docker.com/docker-mac).
@@ -10,9 +10,10 @@ This repo provides everything you need to build a docker-powered local environme
 ### Instructions:
 - Navigate to the CentOS directory that makes sense for your project.
 - Navigate to the PHP directory that makes sense for your project.
-- Download zip file and uncompress on the directory that you wish to 'dockerize'.
+- Download zip file and uncompress it on the directory that you wish to 'dockerize'.
 - Run `ahoy up` to start your local dev environment.
-- Run `ahoy --help` to get a list of available commands.
+- Run `ahoy --help` to see a list of available commands.
+- Run `ahoy ps` to view which ports on your host computer have been mapped to the apache and mysql containers. For example, if port 70888 has been mapped to port 443, you'll want to visit `https://localhost:70888` to view your site on the web browser.
 
 ### How does it work?
 Uncompressing the zip file creates the following directory structure:
@@ -36,8 +37,8 @@ Uncompressing the zip file creates the following directory structure:
 ```
 
 `.docker/Dockerfile` uses an official CentOS image as a base. Then the following extensions and packages are added:
-- PHP
-- PHP extension nedded to connect to MSSQL servers.
+- PHP (5.6 or 7.0)
+- PHP extensions nedded to connect to MSSQL servers.
 - Composer
 - Drush 8.x (for drupal development)
 - Apache
