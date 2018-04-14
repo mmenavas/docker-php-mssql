@@ -1,0 +1,42 @@
+version: '3.2'
+
+volumes:
+  mssql:
+  mysql:
+
+services:
+  mssql:
+    image: microsoft/mssql-server-linux
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: ~M4g!c1AN
+    ports:
+      - 1433
+    volumes:
+      - mssql:/var/opt/mssql
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ~M4g!c1AN
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal
+    ports:
+      - 3306
+    volumes:
+      - mysql:/var/lib/mysql
+  apache:
+    build: ./.docker
+    volumes:
+      - type: bind
+        source: .
+        target: /var/www/app
+    ports:
+      - 80
+      - 443
+    depends_on:
+      - mssql
+      - mysql
+    links:
+      - mssql
+      - mysql

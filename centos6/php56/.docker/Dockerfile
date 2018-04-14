@@ -1,13 +1,15 @@
-FROM centos:7
+FROM centos:6
 
 MAINTAINER "Maximo Mena" <mmenavas@asu.edu>
 
-ENV container docker
-ENV user rtd
+ENV CONTAINER docker
+ENV USER rtd
+ENV PHPVERSION 56
+
 
 # Add EPEL and Webtatic repos
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm \
+ && rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
 
 # Normal updates
 RUN yum -y update
@@ -17,25 +19,25 @@ RUN yum -y install \
     httpd \
     mod_ssl \
     which \
-    php56w \
-    php56w-cli \
-    php56w-common \
-    php56w-gd \
-    php56w-intl \
-    php56w-ldap \
-    php56w-mbstring \
-    php56w-mcrypt \
-    php56w-mssql \
-    php56w-mysql \
-    php56w-odbc \
-    php56w-opcache \
-    php56w-pdo \
-    php56w-pear \
-    php56w-pecl-xdebug \
-    php56w-soap \
-    php56w-xml \
-    php56w-xmlrpc \
-    php50w-ldap \
+    php${PHPVERSION}w \
+    php${PHPVERSION}w-cli \
+    php${PHPVERSION}w-common \
+    php${PHPVERSION}w-gd \
+    php${PHPVERSION}w-intl \
+    php${PHPVERSION}w-ldap \
+    php${PHPVERSION}w-mbstring \
+    php${PHPVERSION}w-mcrypt \
+    php${PHPVERSION}w-mssql \
+    php${PHPVERSION}w-mysql \
+    php${PHPVERSION}w-odbc \
+    php${PHPVERSION}w-opcache \
+    php${PHPVERSION}w-pdo \
+    php${PHPVERSION}w-pear \
+    php${PHPVERSION}w-pecl-xdebug \
+    php${PHPVERSION}w-soap \
+    php${PHPVERSION}w-xml \
+    php${PHPVERSION}w-xmlrpc \
+    php${PHPVERSION}w-ldap \
     patch \
     mysql \
     curl \
@@ -62,11 +64,11 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
  && php -r "unlink('composer-setup.php');"
 
  # Add non root user
-RUN useradd -ms /bin/bash ${user}
-RUN ln -s /home/${user}/.composer/vendor/bin/drush /usr/local/bin/drush
+RUN useradd -ms /bin/bash ${USER}
+RUN ln -s /home/${USER}/.composer/vendor/bin/drush /usr/local/bin/drush
 
 # Install drush
-RUN su - rtd -c "composer global require  drush/drush:8.x"
+RUN su - ${USER} -c "composer global require  drush/drush:8.x"
 
 # Additional configuration
 EXPOSE 80 443
